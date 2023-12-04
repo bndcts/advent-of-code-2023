@@ -11,7 +11,8 @@ fn main() {
         .expect("Should have been able to read the file");
     let split_contents: Vec<&str> = contents.split("\n").collect::<Vec<&str>>();
     let prepared_data = split_data(split_contents);
-    first_puzzle(prepared_data);
+    first_puzzle(prepared_data.clone());
+    second_puzzle(prepared_data);
 }
 
 fn first_puzzle(prepared_data: HashMap<isize, Vec<[isize; 3]>>) {
@@ -27,6 +28,28 @@ fn first_puzzle(prepared_data: HashMap<isize, Vec<[isize; 3]>>) {
                 break;
             }
         }
+    }
+    println!("Total:\n{total}");
+}
+
+fn second_puzzle(prepared_data: HashMap<isize, Vec<[isize; 3]>>) {
+    let mut total: isize = 0;
+    for games in prepared_data.values() {
+        let mut min_red = 0;
+        let mut min_green = 0;
+        let mut min_blue = 0;
+        for game in games {
+            if game[0] > min_red {
+                min_red = game[0];
+            }
+            if game[1] > min_green {
+                min_green = game[1];
+            }
+            if game[2] > min_blue {
+                min_blue = game[2];
+            }
+        }
+        total += min_red * min_green * min_blue;
     }
     println!("Total:\n{total}");
 }
