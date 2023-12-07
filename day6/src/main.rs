@@ -99,9 +99,8 @@ fn second_part_bin_search(raw_data: &Vec<&str>) {
 }
 
 fn part_two_dif(raw_data: &Vec<&str>) {
-    let time : usize = raw_data[0].split_whitespace().filter_map(|x| x.parse::<usize>().ok()).product();
-    let distance : usize = raw_data[1].split_whitespace().filter_map(|x| x.parse::<usize>().ok()).product();
-    println!("raw data: {:?}", raw_data);
+    let time : usize = raw_data[0].split_whitespace().filter(|x| x.chars().all(char::is_numeric)).collect::<String>().parse().unwrap();
+    let distance: usize = raw_data[1].split_whitespace().filter(|s| s.chars().all(char::is_numeric)).collect::<String>().parse().unwrap();
     let mut left = 1;
     let mut right = time-1;
     let mut mid = (left + right) / 2;
@@ -125,12 +124,7 @@ fn part_two_dif(raw_data: &Vec<&str>) {
         }
         mid = (left + right) / 2;
     }
-    println!("Right_botder:{} Mid: {}", right_border, mid);
-    println!("RIght distance: {}, Left Distance: {}", (time - right_border) * right_border, (time - mid) * mid);
-    println!("Min distance: {}", distance);
-    println!("right + 1 distance {}", (time - (right_border+1)) * (right_border+1));
-    println!("left -1 distance {}", (time - 15351) * 15351);
-    println!("Answer: {}", right_border - mid);
+    println!("Answer: {}", right_border - mid + 1);
 }
 
 fn is_enough(point : usize, time : usize, distance : usize) -> bool {
