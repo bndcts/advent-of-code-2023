@@ -8,7 +8,7 @@ fn main() {
         .lines()
         .collect();
     part_one(&prepared_data);
-    //part_two(&prepared_data);
+    part_two(&prepared_data);
 }
 
 fn part_one(raw_data : &Vec<&str> ) {
@@ -22,6 +22,19 @@ fn part_one(raw_data : &Vec<&str> ) {
         total += calculate_history(pyramid);
     }
     println!("total: {}", total);
+}
+
+fn part_two(raw_data: &Vec<&str>) {
+    let mut total = 0;
+    for line in raw_data {
+        let pyramid = build_pyramid(line);
+        if pyramid.len() < 2 {
+            println!("line is empty: {}", line);
+            continue;
+        }
+        total += calculate_history_2(pyramid);
+    }
+    println!("{total}");
 }
 
 fn build_pyramid(line: &str) -> Vec<Vec<isize>> {
@@ -56,6 +69,20 @@ fn calculate_history(pyramid : Vec<Vec<isize>>) -> isize{
     }
     let tmp = pyramid[pyramid.len()-1].len();
     let res = pyramid[pyramid.len()-1][tmp-1];
+    res
+}
+
+fn calculate_history_2(pyramid : Vec<Vec<isize>>) -> isize {
+    let length = pyramid.len();
+    let mut pyramid = pyramid[..length-1].to_vec();
+    pyramid.reverse();
+    let mut prior_add = 0;
+    for line in pyramid.iter_mut() {
+        let curr_num = line[0] - prior_add;
+        line[0] = curr_num;
+        prior_add = curr_num;
+    }
+    let res = pyramid[pyramid.len()-1][0];
     res
 }
 
